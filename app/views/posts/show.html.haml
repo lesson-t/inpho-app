@@ -1,0 +1,56 @@
+SHOW
+
+.post
+  %div
+    - @post.images.each do |i|
+      = image_tag i
+  %div.article_detail
+    -# = image_tag @post.user.avatar_image
+    %div
+      %p= @post.author_name
+      %p= @post.display_created_at   
+      = link_to "https://twitter.com/share?url=#{ request.url }", target: '_blank' do
+        %i.fab.fa-twitter{ style: 'color: #3399FF;'} シェア
+  %div
+    %p= @post.content
+
+
+-# .article
+-#   - if @article.eyecatch.attached?
+-#     .article_image
+-#       = image_tag @article.eyecatch
+-#   %h1.article_title= @article.title
+-#   .article_detail
+-#     = image_tag @article.user.avatar_image
+-#     %div
+-#       %p= @article.author_name
+-#       %p= @article.display_created_at
+-#     - if user_signed_in? && current_user.has_written?(@article)
+-#       .article_detail_actions
+-#         .dropdown
+-#           = image_tag 'actions.svg', class: 'dropbtn'
+-#           .dropdown-content.mini
+-#             = link_to '編集する', edit_article_path(@article)
+-#             = link_to '削除する', article_path(@article), data: { method: 'delete', confirm: '本当に削除してもよろしいですか？' }
+-#   .article_content
+-#     = @article.content
+-#   - if user_signed_in?
+-#     - if current_user.has_liked?(@article)
+-#       .article_heart
+-#         = link_to article_like_path(@article), data: { method: 'delete'} do
+-#           = image_tag 'heart-active.svg'
+-#     - else
+-#       .article_heart
+-#         = link_to article_like_path(@article), data: { method: 'post' } do
+-#           = image_tag 'heart.svg'
+
+-# .article
+-#   %h2 コメント一覧
+-#   - @comments.each do |comment|
+-#     .article_comment
+-#       %P= comment.content
+
+-# .container
+-#   = link_to new_article_comment_path(@article) do
+-#     .btn-secondary
+-#       コメントを追加
