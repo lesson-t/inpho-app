@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   resources :posts do
 
+    resources :comments, only: [:new, :index, :create]
     resource :like, only: [:show, :create, :destroy]
   end
 

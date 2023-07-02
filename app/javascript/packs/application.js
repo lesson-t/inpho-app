@@ -3,7 +3,7 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-require("@rails/ujs").start()
+// require("@rails/ujs").start()
 require("turbolinks").start()
 require("@rails/activestorage").start()
 require("channels")
@@ -20,6 +20,134 @@ require("channels")
 // require("@rails/actiontext")
 
 import $ from 'jquery'
+import axios from 'axios'
+import { csrfToken } from 'rails-ujs'
+
+axios.defaults.headers.common['X-CSRF-Token'] = csrfToken()
+
+// いいねの表示ONOFF
+const handleHeartDisplay = (hasLiked) => {
+    if (hasLiked) {
+      $('.active-heart').removeClass('hidden')
+      console.log('acactive')
+    } else {
+      $('.inactive-heart').removeClass('hidden')
+      console.log('inactive')
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const dataset = $('#comment-show').data()
+    const postId = dataset.postId
+
+    axios.get(`/posts/${postId}/comments`)
+    .then((response) => {
+      const comments = response.data
+      comments.forEach((comment) => {
+        $('.comments-container').append(
+          `<div class="post_comment"><p>${comment.content}</p></div>`
+        )
+      })
+    })
+
+    $('.show-comment-form').on('click', () => {
+      $('.show-comment-form').addClass('hidden')
+      $('.comment-text-area').removeClass('hidden')
+    })
+
+    $('.add-comment-button').on('click', () => {
+      const content = $('#comment_content').val()
+      if (!content) {
+        window.alert('コメントを入力してください')
+      } else {
+        axios.post(`/posts/${postId}/comments`, {
+          comment: {content: content}
+        })
+          .then((res) => {
+            const comment = res.data
+            $('.comments-container').append(
+              `<div class="post_comment"><p>${comment.content}</p></div>`
+            )
+            $('#comment_content').val('')
+        })
+      }
+    })
+})
+
+document.addEventListener('DOMContentLoaded', () => {
+    const dataset = $('#post-show').data()
+    const postId = dataset.postId
+
+    axios.get(`/posts/${postId}/comments`)
+    .then((response) => {
+      const comments = response.data
+      comments.forEach((comment) => {
+        $('.comments-container').append(
+          `<div class="post_comment"><p>${comment.content}</p></div>`
+        )
+      })
+    })
+
+    $('.show-comment-form').on('click', () => {
+      $('.show-comment-form').addClass('hidden')
+      $('.comment-text-area').removeClass('hidden')
+    })
+
+    $('.add-comment-button').on('click', () => {
+      const content = $('#comment_content').val()
+      if (!content) {
+        window.alert('コメントを入力してください')
+      } else {
+        axios.post(`/posts/${postId}/comments`, {
+          comment: {content: content}
+        })
+          .then((res) => {
+            const comment = res.data
+            $('.comments-container').append(
+              `<div class="post_comment"><p>${comment.content}</p></div>`
+            )
+            $('#comment_content').val('')
+        })
+      }
+    })
+
+    axios.get(`/posts/${postId}/like`)
+      .then((response) => {
+        const hasLiked = response.data.hasLiked
+        handleHeartDisplay(hasLiked)
+    })
+
+    $('.inactive-heart').on('click', () => {
+        axios.post(`/posts/${postId}/like`)
+          .then((response) => {
+            console.log(response)
+            if (response.data.status === 'ok') {
+              $('.active-heart').removeClass('hidden')
+              $('.inactive-heart').addClass('hidden')
+            }
+          })
+          .catch((e) => {
+            window.alert('Error')
+            console.log(e)
+          })
+    })
+
+    $('.active-heart').on('click', () => {
+        axios.delete(`/posts/${postId}/like`)
+          .then((response) => {
+            console.log(response)
+            if (response.data.status === 'ok') {
+              $('.active-heart').addClass('hidden')
+              $('.inactive-heart').removeClass('hidden')
+            }
+          })
+          .catch((e) => {
+            window.alert('Error')
+            console.log(e)
+          })
+    })
+})
+
 
 // $(function() {
 // document.addEventListener('DOMContentLoaded', () => {
@@ -98,3 +226,4 @@ $(function() {
 //       });
 //     });
 //   });
+

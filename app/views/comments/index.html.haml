@@ -1,0 +1,13 @@
+COMMENT INDEX
+
+.post#comment-show{data: {post_id: @post.id}}
+  %h2 COMMENTS
+  .comments-container
+
+.container
+  .btn-secondary.show-comment-form
+    ADD COMMENTS
+  .comment-text-area.hidden
+    = text_area_tag :comment_content, '', class: 'sm'
+    .btn-secondary.add-comment-button
+      ADD COMMENTS

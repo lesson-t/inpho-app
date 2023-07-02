@@ -1,6 +1,6 @@
 SHOW
 
-.post
+.post#post-show{data: {post_id: @post.id}}
   %div
     - @post.images.each do |i|
       = image_tag i
@@ -13,7 +13,34 @@ SHOW
         %i.fab.fa-twitter{ style: 'color: #3399FF;'} シェア
   %div
     %p= @post.content
+    - if user_signed_in?
+      .post_heart.hidden.active-heart
+        = image_tag 'heart-active.svg'
+      .post_heart.hidden.inactive-heart
+        = image_tag 'heart.svg'
 
+-# .post
+-#   %h2 COMMENTS
+-#   .comments-container
+
+-# .container
+-#   .btn-secondary.show-comment-form
+-#     ADD COMMENTS
+-#   .comment-text-area.hidden
+-#     = text_area_tag :comment_content, '', class: 'sm'
+-#     .btn-secondary.add-comment-button
+-#       ADD COMMENTS
+
+-# いいね機能のみ表示切替なし
+-#   - if user_signed_in?
+-#     - if current_user.has_liked?(@post)
+-#       .post_heart
+-#         = link_to post_like_path(@post), data: { method: 'delete'} do
+-#           = image_tag 'heart-active.svg'
+-#     - else
+-#       .post_heart
+-#         = link_to post_like_path(@post), data: { method: 'post' } do
+-#           = image_tag 'heart.svg'
 
 -# .article
 -#   - if @article.eyecatch.attached?
