@@ -1,0 +1,13 @@
+.post
+    %div
+        - post.images.each do |i|
+            = image_tag i
+    %div.article_detail
+        -# = image_tag @post.user.avatar_image
+        %div
+        %p= post.author_name
+        %p= post.display_created_at   
+        = link_to "https://twitter.com/share?url=#{ request.url }", target: '_blank' do
+            %i.fab.fa-twitter{ style: 'color: #3399FF;'} シェア
+    %div
+        %p= post.content

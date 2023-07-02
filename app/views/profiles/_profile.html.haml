@@ -1,0 +1,19 @@
+.container.profilePage
+  .profilePage_user
+    .profilePage_user_image
+      = image_tag user.profile.avatar, id: 'profile_image', style: 'cursor: pointer;'
+      = form_with(model: @profile, url: profile_path(@profile), method: :put, local: true, html: { multipart: true }) do |f|
+        = f.file_field :avatar, id: "image_selector", style: "display: none;"
+        = f.submit "Save", id: "save_button"#, style: "display: none;"
+      -# %input#image_selector{ type: 'file', style: 'display: none;'}
+      -# %input#image_selector{ type: 'file', style: 'display: none;' }
+      -# %button#save_button{ style: 'display: none;' } 投稿
+    .profilePage_user_basicInfo
+      .profilePage_user_name
+        .profilePage_user_displayName
+        -#   #{user.display_name}（#{user.age || '？歳'}・#{I18n.t("enum.genders.#{user.gender || 'unknown'}")}）
+        .profilePage_user_actionButton
+          - if user == current_user
+            = link_to 'Edit', edit_profile_path
+      .profilePage_user_introduction
+        = user.profile&.introduction
